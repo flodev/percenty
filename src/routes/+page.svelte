@@ -3,7 +3,7 @@
 	import * as Accordion from '$lib/components/ui/accordion';
 </script>
 
-<Button variant="outline">Click me</Button>
+<Button size="lg">Click me</Button>
 
 <Accordion.Root>
 	<Accordion.Item value="item-1">
