@@ -1,13 +1,24 @@
 <script lang="ts">
 	import { Button } from '$lib/components/ui/button';
 	import * as Accordion from '$lib/components/ui/accordion';
+	import * as Card from '$lib/components/ui/card';
+	import type { PageData } from './$types.js';
+
+	import SettingsForm from './settings/settings-form.svelte';
+	export let data: PageData;
 </script>
 
-<Button size="lg">Click me</Button>
+<!-- <Card.Root>
+	<Card.Header>
+		<Card.Title>Card Title</Card.Title>
+		<Card.Description>Card Description</Card.Description>
+	</Card.Header>
+	<Card.Content>
+		<p>Card Content</p>
+	</Card.Content>
+	<Card.Footer>
+		<p>Card Footer</p>
+	</Card.Footer>
+</Card.Root> -->
 
-<Accordion.Root>
-	<Accordion.Item value="item-1">
-		<Accordion.Trigger>Is it accessible?</Accordion.Trigger>
-		<Accordion.Content>Yes. It adheres to the WAI-ARIA design pattern.</Accordion.Content>
-	</Accordion.Item>
-</Accordion.Root>
+<SettingsForm data={data.form} />
