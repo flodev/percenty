@@ -1,11 +1,9 @@
 <script lang="ts">
-	import { Button } from '$lib/components/ui/button';
-	import * as Accordion from '$lib/components/ui/accordion';
-	import * as Card from '$lib/components/ui/card';
-	import type { PageData } from './$types.js';
-
-	import SettingsForm from './settings/settings-form.svelte';
-	export let data: PageData;
+	import { superForm } from 'sveltekit-superforms';
+	import CategoryForm from './category/category-form.svelte';
+	import { categorySchema } from './schemas/schema';
+	import { zod } from 'sveltekit-superforms/adapters';
+	let { data } = $props();
 </script>
 
 <!-- <Card.Root>
@@ -21,4 +19,4 @@
 	</Card.Footer>
 </Card.Root> -->
 
-<SettingsForm data={data.form} />
+<CategoryForm data={data.form} />
