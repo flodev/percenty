@@ -1,22 +1,13 @@
 <script lang="ts">
-	import { superForm } from 'sveltekit-superforms';
-	import CategoryForm from './category/category-form.svelte';
-	import { categorySchema } from './schemas/schema';
-	import { zod } from 'sveltekit-superforms/adapters';
-	let { data } = $props();
+  import { superForm } from 'sveltekit-superforms';
+  import CategoryForm from './category/category-form.svelte';
+  import { categorySchema } from './schemas/schema';
+  import { zod } from 'sveltekit-superforms/adapters';
+  import Category from './category/category.svelte';
+  import { Category as CategoryClass } from './schemas/category';
+  let { data } = $props();
 </script>
 
-<!-- <Card.Root>
-	<Card.Header>
-		<Card.Title>Card Title</Card.Title>
-		<Card.Description>Card Description</Card.Description>
-	</Card.Header>
-	<Card.Content>
-		<p>Card Content</p>
-	</Card.Content>
-	<Card.Footer>
-		<p>Card Footer</p>
-	</Card.Footer>
-</Card.Root> -->
+<Category category={new CategoryClass('test', 100, [], [], undefined)} />
 
-<CategoryForm data={data.form} />
+<!-- <CategoryForm data={data.form} /> -->

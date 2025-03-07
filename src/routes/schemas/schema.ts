@@ -21,7 +21,7 @@ const baseCategorySchema = z.object({
   percentages: z.array(percentageSchema)
 });
 
-type CategoryType = z.infer<typeof baseCategorySchema> & {
+export type CategoryType = z.infer<typeof baseCategorySchema> & {
   categories: CategoryType[];
 };
 
@@ -29,83 +29,9 @@ export const categorySchema: z.ZodType<CategoryType> = baseCategorySchema.extend
   categories: z.array(z.lazy(() => categorySchema))
 });
 
-class Category {
-  constructor(
-    public name: string,
-    public percent: number,
-    public categories: CategoryType[],
-    public percentages: PercentageSchemaType[],
-    private parent?: Category,
-    /**
-     * only the root element will get the amount injected
-     */
-    private _amount?: number
-  ) {}
-
-  get amount(): number {
-    if (this.parent) {
-      return this.parent.amount * (this.percent / 100);
-    }
-    if (this._amount == undefined) {
-      throw new Error('amount is not defined in root category');
-    }
-    return this._amount;
-  }
-  toJSON(): CategoryType {
-    return {
-      name: this.name,
-      percent: this.percent,
-      categories: this.categories,
-      percentages: this.percentages,
-      amount: this._amount
-    };
-  }
-}
-
 export type CategorySchema = typeof categorySchema;
 
 export type CategorySchemaType = z.infer<CategorySchema>;
-
-const testData: CategorySchemaType = {
-  amount: 1000,
-  name: 'root',
-  categories: [
-    {
-      name: 'risk part',
-      percent: 80,
-      categories: [
-        {
-          name: 'ETFs',
-          percent: 70,
-          categories: [],
-          percentages: [
-            { name: 'world', percent: 70 },
-            { name: 'EM', percent: 30 }
-          ]
-        },
-        {
-          name: 'sustainable',
-          percent: 20,
-          categories: [],
-          percentages: [{ name: 'ETF sustainable', percent: 100 }]
-        },
-        {
-          name: 'commondities',
-          percent: 10,
-          categories: [],
-          percentages: [{ name: 'ETF commodities', percent: 100 }]
-        }
-      ],
-      percentages: []
-    },
-    {
-      name: 'low risk',
-      percent: 20,
-      categories: [],
-      percentages: [{ name: 'government bond', percent: 100 }]
-    }
-  ]
-};
 
 export interface Folder {
   id: number;
@@ -149,59 +75,3 @@ export function getRecursive(id: number): Observable<Folder> {
 }
 
 // getRecursive(0).subscribe((folder) => console.log(JSON.stringify(folder)));
-
-function makeClass(category: CategorySchemaType, parent?: Category) {
-  return new Category(
-    category.name,
-    category.percent,
-    category.categories,
-    category.percentages,
-    parent,
-    parent == undefined ? category.amount : undefined
-  );
-}
-
-function recursiveStuff(data: CategorySchemaType, parent?: Category): Observable<Category> {
-  console.log('run recursive stuff with', data);
-
-  return of(data).pipe(
-    // Transform the input data into a Category object
-    map((currentData) => {
-      console.log('making class for', currentData);
-      return makeClass(currentData, parent);
-    }),
-
-    // Process subcategories recursively
-    mergeMap((cat) => {
-      console.log('processing cat:', cat.name, 'with subcategories:', cat.categories);
-
-      if (cat.categories.length > 0) {
-        // Recursively process all subcategories in parallel
-        return forkJoin(cat.categories.map((newCat) => recursiveStuff(newCat, cat))).pipe(
-          // Return the parent category with processed subcategories
-          map((processedSubcategories) => {
-            cat.categories = processedSubcategories;
-            return cat;
-          })
-        );
-      } else {
-        // No subcategories, return the category as-is
-        return of(cat);
-      }
-    }),
-
-    // Log the result
-    tap((result) => {
-      console.log('processed category:', result);
-    }),
-
-    // Handle errors
-    catchError((e) => {
-      console.error('failed:', e);
-      return throwError(() => new Error('Processing failed'));
-    })
-  );
-}
-
-console.log('subscribe');
-recursiveStuff(testData).subscribe((res) => console.log('done', res));

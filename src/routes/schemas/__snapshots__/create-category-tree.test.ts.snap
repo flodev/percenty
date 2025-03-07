@@ -1,0 +1,72 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`create category tree > creates the tree 1`] = `
+{
+  "amount": 1000,
+  "categories": [
+    {
+      "amount": undefined,
+      "categories": [
+        {
+          "amount": undefined,
+          "categories": [],
+          "name": "ETFs",
+          "percent": 70,
+          "percentages": [
+            {
+              "name": "world",
+              "percent": 70,
+            },
+            {
+              "name": "EM",
+              "percent": 30,
+            },
+          ],
+        },
+        {
+          "amount": undefined,
+          "categories": [],
+          "name": "sustainable",
+          "percent": 20,
+          "percentages": [
+            {
+              "name": "ETF sustainable",
+              "percent": 100,
+            },
+          ],
+        },
+        {
+          "amount": undefined,
+          "categories": [],
+          "name": "commondities",
+          "percent": 10,
+          "percentages": [
+            {
+              "name": "ETF commodities",
+              "percent": 100,
+            },
+          ],
+        },
+      ],
+      "name": "risk part",
+      "percent": 80,
+      "percentages": [],
+    },
+    {
+      "amount": undefined,
+      "categories": [],
+      "name": "low risk",
+      "percent": 20,
+      "percentages": [
+        {
+          "name": "government bond",
+          "percent": 100,
+        },
+      ],
+    },
+  ],
+  "name": "root",
+  "percent": 100,
+  "percentages": [],
+}
+`;
