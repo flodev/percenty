@@ -11,12 +11,16 @@
 </script>
 
 <Card.Root>
-  <Card.Header>
+  <Card.Header class="flex flex-row items-center justify-between">
     <Card.Title>{category.name}</Card.Title>
     <Popover.Root portal={null}>
       <Popover.Trigger asChild let:builder>
         <Button builders={[builder]} variant="outline" size="icon"><Plus /></Button>
       </Popover.Trigger>
+      <Popover.Content class="flex flex-col">
+        <Button variant="outline" class="flex justify-start"><Plus /> sub category</Button>
+        <Button variant="outline" class="flex justify-start"><Plus /> percentage</Button>
+      </Popover.Content>
     </Popover.Root>
   </Card.Header>
   <Card.Content>
@@ -24,7 +28,4 @@
       <CategoryComponentRecursive category={childCategory} />
     {/each}
   </Card.Content>
-  <!-- <Card.Footer>
-    <p>Card Footer</p>
-  </Card.Footer> -->
 </Card.Root>
