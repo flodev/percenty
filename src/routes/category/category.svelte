@@ -3,7 +3,7 @@
   import CategoryComponentRecursive from './category.svelte';
   import type { Category } from '../schemas/category';
   import { Plus } from 'lucide-svelte';
-  import * as Popover from '$lib/components/ui/popover';
+  import { Popover } from 'bits-ui';
   import Button from '$lib/components/ui/button/button.svelte';
 
   let {
@@ -16,14 +16,19 @@
     isAddMenuOpen = false;
     onCategoryAdd(category);
   };
+
+  const onOpenChange = (isOpen: boolean) => {
+    isAddMenuOpen = isOpen;
+  };
 </script>
 
 <Card.Root>
   <Card.Header class="flex flex-row items-center justify-between">
     <Card.Title>{category.name} {isAddMenuOpen}</Card.Title>
-    <Button variant="outline" size="icon" on:click={() => (isAddMenuOpen = true)}><Plus /></Button>
-    <Popover.Root portal={null} open={isAddMenuOpen}>
-      <Popover.Trigger></Popover.Trigger>
+    <Popover.Root open={isAddMenuOpen} {onOpenChange}>
+      <Popover.Trigger>
+        <Button variant="outline" size="icon"><Plus /></Button>
+      </Popover.Trigger>
       <Popover.Content class="flex flex-col">
         <Button variant="outline" class="flex justify-start" on:click={onCategoryAddClick}
           ><Plus /> sub category
