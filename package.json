@@ -4,6 +4,7 @@
   "version": "0.0.1",
   "type": "module",
   "scripts": {
+    "start": "npm run dev",
     "dev": "vite dev",
     "dev:debug": "vite dev --debug",
     "build": "vite build",
@@ -25,7 +26,7 @@
     "@tailwindcss/vite": "^4.0.0",
     "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/svelte": "^5.2.4",
-    "bits-ui": "1.3.6",
+    "bits-ui": "0.21.16",
     "clsx": "^2.1.1",
     "formsnap": "^1.0.1",
     "jsdom": "^25.0.1",

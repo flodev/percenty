@@ -5,13 +5,23 @@
   import { zod } from 'sveltekit-superforms/adapters';
   import Category from './category/category.svelte';
   import { Category as CategoryClass } from './schemas/category';
+  import Drawer from './drawer/drawer.svelte';
+
   let { data } = $props();
+  let isDrawerOpen = $state(false);
 
   const onCategoryAdd = () => {
-    console.log('hallo');
+    isDrawerOpen = true;
   };
 </script>
 
 <Category category={new CategoryClass('test', 100, [], [], undefined)} {onCategoryAdd} />
+
+<Drawer
+  open={isDrawerOpen}
+  description={'descr'}
+  title="title"
+  onClose={() => (isDrawerOpen = false)}
+/>
 
 <!-- <CategoryForm data={data.form} /> -->

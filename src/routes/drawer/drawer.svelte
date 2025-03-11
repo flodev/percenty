@@ -1,17 +1,20 @@
 <script lang="ts">
+  import { Button } from '$lib/components/ui/button';
+  import * as Drawer from '$lib/components/ui/drawer';
+  import type { Snippet } from 'svelte';
+
   type Props = {
     open: boolean;
     title: string;
     description: string;
+    onClose: () => void;
+    children: Snippet;
   };
 
-  import { Button } from '$lib/components/ui/button';
-  import * as Drawer from '$lib/components/ui/drawer';
-
-  let { open, title, description }: Props = $props();
+  let { open, title, description, onClose }: Props = $props();
 </script>
 
-<Drawer.Root bind:open>
+<Drawer.Root bind:open {onClose}>
   <Drawer.Content>
     <Drawer.Header>
       <Drawer.Title>{title}</Drawer.Title>

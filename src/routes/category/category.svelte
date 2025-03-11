@@ -13,11 +13,13 @@
   let isAddMenuOpen = $state(false);
 
   const onCategoryAddClick = () => {
+    console.log('huhu??');
     isAddMenuOpen = false;
     onCategoryAdd(category);
   };
 
   const onOpenChange = (isOpen: boolean) => {
+    console.log('onOpenChange', isOpen);
     isAddMenuOpen = isOpen;
   };
 </script>
@@ -31,9 +33,11 @@
       </Popover.Trigger>
       <Popover.Content class="flex flex-col">
         <Button variant="outline" class="flex justify-start" on:click={onCategoryAddClick}
-          ><Plus /> sub category
+          ><Plus /> sub categorymm
         </Button>
-        <Button variant="outline" class="flex justify-start"><Plus /> percentage</Button>
+        <Button variant="outline" class="flex justify-start" on:click={console.log}
+          ><Plus /> percentage</Button
+        >
       </Popover.Content>
     </Popover.Root>
   </Card.Header>
