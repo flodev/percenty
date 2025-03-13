@@ -6,23 +6,21 @@
   type Props = {
     open: boolean;
     title: string;
-    description: string;
     onClose: () => void;
     children: Snippet;
+    footer?: Snippet;
   };
 
-  let { open, title, description, onClose }: Props = $props();
+  let { open, title, children, onClose, footer }: Props = $props();
 </script>
 
 <Drawer.Root bind:open {onClose}>
   <Drawer.Content>
     <Drawer.Header>
       <Drawer.Title>{title}</Drawer.Title>
-      <Drawer.Description>{description}</Drawer.Description>
     </Drawer.Header>
-    <Drawer.Footer>
-      <Button>Submit</Button>
-      <Drawer.Close>Cancel</Drawer.Close>
-    </Drawer.Footer>
+    {@render children()}
+
+    <Drawer.Footer>{@render footer?.()}</Drawer.Footer>
   </Drawer.Content>
 </Drawer.Root>

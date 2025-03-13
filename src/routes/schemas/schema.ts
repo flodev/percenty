@@ -16,7 +16,7 @@ import {
 
 const baseCategorySchema = z.object({
   name: z.string().min(2).max(50),
-  percent: z.number().gte(1),
+  percent: z.number().gte(1).lte(100),
   amount: z.number().optional(),
   percentages: z.array(percentageSchema)
 });
@@ -73,5 +73,3 @@ export function getRecursive(id: number): Observable<Folder> {
     map(([parent]) => parent)
   );
 }
-
-// getRecursive(0).subscribe((folder) => console.log(JSON.stringify(folder)));

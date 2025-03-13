@@ -26,14 +26,14 @@
 
 <Card.Root>
   <Card.Header class="flex flex-row items-center justify-between">
-    <Card.Title>{category.name} {isAddMenuOpen}</Card.Title>
+    <Card.Title>{category.name}</Card.Title>
     <Popover.Root open={isAddMenuOpen} {onOpenChange}>
       <Popover.Trigger>
         <Button variant="outline" size="icon"><Plus /></Button>
       </Popover.Trigger>
       <Popover.Content class="flex flex-col">
         <Button variant="outline" class="flex justify-start" on:click={onCategoryAddClick}
-          ><Plus /> sub categorymm
+          ><Plus /> sub category
         </Button>
         <Button variant="outline" class="flex justify-start" on:click={console.log}
           ><Plus /> percentage</Button
