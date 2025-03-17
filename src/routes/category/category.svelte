@@ -16,6 +16,7 @@
     <AddMenu onCategoryAdd={() => onCategoryAdd(category)} onPercentageAdd={console.log} />
   </Card.Header>
   <Card.Content>
+    sub cats {category.categories.length}
     {#each category.categories as childCategory}
       <CategoryComponentRecursive category={childCategory} {onCategoryAdd} />
     {/each}

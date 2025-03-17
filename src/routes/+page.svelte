@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { produce } from 'immer';
   import { superForm, type Infer, type SuperValidated } from 'sveltekit-superforms';
   import { writable } from 'svelte/store';
   import CategoryForm from './category/category-form.svelte';
@@ -36,12 +37,22 @@
     const newCategory = new CategoryClass(formData.name, formData.percent, [], [], parentCategory);
 
     data.update((currentState) => {
-      if (parentCategory) {
-        parentCategory.categories = [...parentCategory.categories, newCategory];
-      } else {
-        currentState.rootCategories = [...currentState.rootCategories, newCategory];
-      }
-      return { ...currentState };
+      return produce(currentState, (draft) => {
+        const update = (categories: CategoryClass[]) => {
+          categories.forEach((category) => {
+            if (category === parentCategory) {
+              category.categories = [...category.categories, newCategory];
+            } else {
+              update(category.categories || []);
+            }
+          });
+        };
+        if (parentCategory) {
+          update(draft.rootCategories);
+        } else {
+          draft.rootCategories = [newCategory];
+        }
+      });
     });
   };
 </script>
@@ -49,6 +60,7 @@
 <div class="flex justify-end">
   <AddMenu {onCategoryAdd} onPercentageAdd={console.log} />
 </div>
+{JSON.stringify($data, undefined, '  ')}
 {#each $data.rootCategories as category}
   <Category {category} {onCategoryAdd} />
 {/each}
