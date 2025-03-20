@@ -1,5 +1,5 @@
 import { catchError, forkJoin, map, mergeMap, of, tap, throwError, type Observable } from 'rxjs';
-import { Category } from './category';
+import { Category } from './category.svelte';
 import type { CategorySchemaType } from './schema';
 
 export function createCategoryTree(

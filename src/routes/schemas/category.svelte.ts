@@ -2,17 +2,32 @@ import type { PercentageSchemaType } from './percentage';
 import type { CategoryType } from './schema';
 
 export class Category {
+  name = $state<string>();
+  percent = $state<number>(0);
+  categories = $state<Category[]>([]);
+  percentages = $state<PercentageSchemaType[]>([]);
+  parent = $state<Category | undefined>();
+
+  private _amount?: number;
+
   constructor(
-    public name: string,
-    public percent: number,
-    public categories: Category[],
-    public percentages: PercentageSchemaType[],
-    private parent?: Category,
+    name: string,
+    percent: number,
+    categories: Category[],
+    percentages: PercentageSchemaType[],
+    parent: Category | undefined,
     /**
      * only the root element will get the amount injected
      */
-    private _amount?: number
-  ) {}
+    _amount?: number
+  ) {
+    this.name = name;
+    this.percent = percent;
+    this.categories = categories;
+    this.percentages = percentages;
+    this.parent = parent;
+    this._amount = _amount;
+  }
 
   get amount(): number {
     if (this.parent) {

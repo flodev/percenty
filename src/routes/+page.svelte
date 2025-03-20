@@ -1,19 +1,15 @@
 <script lang="ts">
-  import { produce } from 'immer';
-  import { superForm, type Infer, type SuperValidated } from 'sveltekit-superforms';
-  import { writable } from 'svelte/store';
+  import { type Infer, type SuperValidated } from 'sveltekit-superforms';
   import CategoryForm from './category/category-form.svelte';
-  import { categorySchema, type CategorySchema, type CategoryType } from './schemas/schema';
+  import { type CategorySchema, type CategoryType } from './schemas/schema';
   import Category from './category/category.svelte';
-  import { Category as CategoryClass } from './schemas/category';
+  import { Category as CategoryClass } from './schemas/category.svelte';
   import Drawer from './drawer/drawer.svelte';
   import AddMenu from './category/add-menu.svelte';
-  // let { data } = $props();
   let isDrawerOpen = $state(false);
   let parentCategory = $state<CategoryClass | undefined>();
-  // let data = $state<CategoryClass | undefined>();
 
-  const data = writable<{ rootCategories: CategoryClass[] }>({ rootCategories: [] });
+  let data = $state<{ categories: CategoryClass[] }>({ categories: [] });
 
   let emptyForm: SuperValidated<Infer<CategorySchema>> = {
     data: {
@@ -27,41 +23,29 @@
     id: 'new',
     errors: {}
   };
-  const onCategoryAdd = (parent?: CategoryClass) => {
+  function onCategoryAdd(parent?: CategoryClass) {
     parentCategory = parent;
     isDrawerOpen = true;
-  };
+  }
 
-  const onCategorySubmit = (formData: CategoryType) => {
-    isDrawerOpen = false;
+  function onCategorySubmit(formData: CategoryType) {
     const newCategory = new CategoryClass(formData.name, formData.percent, [], [], parentCategory);
 
-    data.update((currentState) => {
-      return produce(currentState, (draft) => {
-        const update = (categories: CategoryClass[]) => {
-          categories.forEach((category) => {
-            if (category === parentCategory) {
-              category.categories = [...category.categories, newCategory];
-            } else {
-              update(category.categories || []);
-            }
-          });
-        };
-        if (parentCategory) {
-          update(draft.rootCategories);
-        } else {
-          draft.rootCategories = [newCategory];
-        }
-      });
-    });
-  };
+    if (parentCategory) {
+      parentCategory.categories.push(newCategory);
+    } else {
+      data.categories.push(newCategory);
+    }
+    parentCategory = undefined;
+    isDrawerOpen = false;
+  }
 </script>
 
 <div class="flex justify-end">
   <AddMenu {onCategoryAdd} onPercentageAdd={console.log} />
 </div>
-{JSON.stringify($data, undefined, '  ')}
-{#each $data.rootCategories as category}
+{JSON.stringify(data, undefined, '  ')}
+{#each data.categories as category}
   <Category {category} {onCategoryAdd} />
 {/each}
 

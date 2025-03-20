@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { Category } from './category';
+import { Category } from './category.svelte';
 
 describe('category test', () => {
   it('calculates the amount', async () => {

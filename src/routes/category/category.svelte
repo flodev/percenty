@@ -1,13 +1,16 @@
 <script lang="ts">
   import * as Card from '$lib/components/ui/card';
   import CategoryComponentRecursive from './category.svelte';
-  import type { Category } from '../schemas/category';
+  import type { Category } from '../schemas/category.svelte';
   import AddMenu from './add-menu.svelte';
 
   let {
     category,
     onCategoryAdd
-  }: { category: Category; onCategoryAdd: (parent: Category) => void } = $props();
+  }: {
+    category: Category;
+    onCategoryAdd: (parent: Category) => void;
+  } = $props();
 </script>
 
 <Card.Root>
@@ -16,7 +19,6 @@
     <AddMenu onCategoryAdd={() => onCategoryAdd(category)} onPercentageAdd={console.log} />
   </Card.Header>
   <Card.Content>
-    sub cats {category.categories.length}
     {#each category.categories as childCategory}
       <CategoryComponentRecursive category={childCategory} {onCategoryAdd} />
     {/each}
