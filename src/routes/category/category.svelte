@@ -15,7 +15,9 @@
 
 <Card.Root>
   <Card.Header class="flex flex-row items-center justify-between">
-    <Card.Title>{category.name}</Card.Title>
+    <Card.Title
+      ><span class="text-2xl text-blue-600">{category.percent}%</span> {category.name}</Card.Title
+    >
     <AddMenu onCategoryAdd={() => onCategoryAdd(category)} onPercentageAdd={console.log} />
   </Card.Header>
   <Card.Content>

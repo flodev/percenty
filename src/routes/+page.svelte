@@ -44,7 +44,6 @@
 <div class="flex justify-end">
   <AddMenu {onCategoryAdd} onPercentageAdd={console.log} />
 </div>
-{JSON.stringify(data, undefined, '  ')}
 {#each data.categories as category}
   <Category {category} {onCategoryAdd} />
 {/each}
