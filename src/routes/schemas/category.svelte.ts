@@ -1,5 +1,4 @@
 import type { PercentageSchemaType } from './percentage';
-import type { CategoryType } from './schema';
 
 export class Category {
   name = $state<string>();
