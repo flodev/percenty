@@ -8,28 +8,32 @@
   import { Edit } from 'lucide-svelte';
 
   type Props = {
-    data: AmountFormData;
-    onSubmit(amount: AmountFormData): void;
+    amount: number;
+    onSubmit(amount: number): void;
   };
 
   let isWritable = $state(false);
 
   let amountElement: HTMLInputElement;
 
-  const { data, onSubmit }: Props = $props();
+  const { amount, onSubmit }: Props = $props();
 
-  console.log('does this update?');
-
-  const form = superForm(data, {
-    SPA: true,
-    validators: zod(AmountSchema),
-    onUpdate({ form }) {
-      console.log('on update', form);
-      if (form.valid) {
-        onSubmit(form);
+  const form = superForm(
+    {
+      amount
+    },
+    {
+      resetForm: false,
+      SPA: true,
+      validators: zod(AmountSchema),
+      onUpdate({ form }) {
+        console.log('on update', form);
+        if (form.valid) {
+          onSubmit(form.data.amount);
+        }
       }
     }
-  });
+  );
 
   $effect(() => {
     if (isWritable && amountElement) {
@@ -66,7 +70,7 @@
 
 {#if !isWritable}
   <div class="flex-row items-center justify-start">
-    Amount: {data.data.amount}
+    Amount: {amount}
     <Button variant="outline" size="icon" on:click={() => (isWritable = true)}
       ><Edit class="align-middle" /></Button
     >

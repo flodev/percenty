@@ -34,8 +34,8 @@
     errors: {}
   });
 
-  const onAmountFormSubmit = (amountData: AmountFormData) => {
-    amountForm.data.amount = amountData.data.amount;
+  const onAmountFormSubmit = (amountData: number) => {
+    amountForm.data.amount = amountData;
   };
   function onCategoryAdd(parent?: CategoryClass) {
     parentCategory = parent;
@@ -58,7 +58,7 @@
 <div class="flex justify-end">
   <AddMenu {onCategoryAdd} onPercentageAdd={console.log} />
 </div>
-<Amount data={amountForm} onSubmit={onAmountFormSubmit} />
+<Amount amount={amountForm.data.amount} onSubmit={onAmountFormSubmit} />
 {#each data.categories as category}
   <Category {category} {onCategoryAdd} />
 {/each}
