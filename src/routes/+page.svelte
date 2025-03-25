@@ -35,7 +35,7 @@
   });
 
   const onAmountFormSubmit = (amountData: AmountFormData) => {
-    amountForm = amountData;
+    amountForm.data.amount = amountData.data.amount;
   };
   function onCategoryAdd(parent?: CategoryClass) {
     parentCategory = parent;

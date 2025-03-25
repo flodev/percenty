@@ -18,6 +18,8 @@
 
   const { data, onSubmit }: Props = $props();
 
+  console.log('does this update?');
+
   const form = superForm(data, {
     SPA: true,
     validators: zod(AmountSchema),
@@ -36,12 +38,6 @@
   });
 
   const { form: formData, enhance, submit } = form;
-
-  $effect(() => {
-    if (data) {
-      $formData = { ...data, amount: data.data.amount };
-    }
-  });
 
   const onAmountFieldBlur = () => {
     submit();
