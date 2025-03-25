@@ -7,7 +7,7 @@
   import Drawer from './drawer/drawer.svelte';
   import AddMenu from './category/add-menu.svelte';
   import Amount from './amount.svelte';
-  import { AmountSchema } from './amount-schema';
+  import { AmountSchema, type AmountFormData } from './amount-schema';
   let isDrawerOpen = $state(false);
   let parentCategory = $state<CategoryClass | undefined>();
 
@@ -26,12 +26,16 @@
     errors: {}
   };
 
-  let amountForm: SuperValidated<Infer<typeof AmountSchema>> = {
+  let amountForm: AmountFormData = $state({
     data: { amount: 1 },
     valid: true,
     posted: false,
     id: 'new',
     errors: {}
+  });
+
+  const onAmountFormSubmit = (amountData: AmountFormData) => {
+    amountForm = amountData;
   };
   function onCategoryAdd(parent?: CategoryClass) {
     parentCategory = parent;
@@ -54,7 +58,7 @@
 <div class="flex justify-end">
   <AddMenu {onCategoryAdd} onPercentageAdd={console.log} />
 </div>
-<Amount data={amountForm} onSubmit={console.log} />
+<Amount data={amountForm} onSubmit={onAmountFormSubmit} />
 {#each data.categories as category}
   <Category {category} {onCategoryAdd} />
 {/each}
