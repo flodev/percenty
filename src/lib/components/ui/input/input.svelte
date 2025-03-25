@@ -3,8 +3,8 @@
   import type { InputEvents } from './index.js';
   import { cn } from '$lib/utils.js';
 
-  type $$Props = HTMLInputAttributes & { inputElement: HTMLInputElement };
-  export let inputElement: HTMLInputElement;
+  type $$Props = HTMLInputAttributes & { inputElement?: HTMLInputElement | undefined };
+  export let inputElement: HTMLInputElement | undefined = undefined;
 
   type $$Events = InputEvents;
 
