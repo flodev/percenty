@@ -11,7 +11,7 @@
   let isDrawerOpen = $state(false);
   let parentCategory = $state<CategoryClass | undefined>();
 
-  let data = $state<{ categories: CategoryClass[] }>({ categories: [] });
+  let data = $state<CategoryClass>(new CategoryClass('root', 100, [], []));
 
   let emptyForm: SuperValidated<Infer<CategorySchema>> = {
     data: {
@@ -64,5 +64,9 @@
 {/each}
 
 <Drawer open={isDrawerOpen} title="New Category" onClose={() => (isDrawerOpen = false)}>
-  <CategoryForm data={emptyForm} onSubmit={onCategorySubmit} />
+  <CategoryForm
+    data={emptyForm}
+    onSubmit={onCategorySubmit}
+    maxPercent={parentCategory?.availablePercent ?? data.availablePercent}
+  />
 </Drawer>

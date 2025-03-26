@@ -3,17 +3,20 @@
   import { Input } from '$lib/components/ui/input';
   import { categorySchema, type CategorySchema, type CategoryType } from '../schemas/schema';
   import { type SuperValidated, type Infer, superForm } from 'sveltekit-superforms';
-  import { zod, zodClient } from 'sveltekit-superforms/adapters';
+  import { zod } from 'sveltekit-superforms/adapters';
+  import * as z from 'zod';
 
   type Props = {
     data: SuperValidated<Infer<CategorySchema>>;
     onSubmit(category: CategoryType): void;
+    maxPercent: number;
   };
-  const { data, onSubmit }: Props = $props();
+  const { data, onSubmit, maxPercent }: Props = $props();
+  const zodSchema = zod(categorySchema.extend({ percent: z.number().gte(1).lte(maxPercent) }));
 
   const form = superForm(data, {
     SPA: true,
-    validators: zod(categorySchema),
+    validators: zodSchema,
     onUpdate({ form }) {
       console.log('on update', form);
       if (form.valid) {
@@ -39,7 +42,7 @@
       <Form.Label>Percent</Form.Label>
       <Input {...attrs} bind:value={$formData.percent} type="number" />
     </Form.Control>
-    <Form.Description>Percent to give the category</Form.Description>
+    <Form.Description>Percent to give the category (1 - {maxPercent})</Form.Description>
     <Form.FieldErrors />
   </Form.Field>
   <Form.Button>Save</Form.Button>

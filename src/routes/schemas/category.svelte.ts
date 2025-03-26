@@ -14,7 +14,7 @@ export class Category {
     percent: number,
     categories: Category[],
     percentages: PercentageSchemaType[],
-    parent: Category | undefined,
+    parent?: Category,
     /**
      * only the root element will get the amount injected
      */
@@ -37,6 +37,11 @@ export class Category {
     }
     return this._amount;
   }
+
+  get availablePercent(): number {
+    return 100 - this.categories.reduce((previous, current) => previous + current.percent, 0);
+  }
+
   toJSON() {
     return {
       name: this.name,

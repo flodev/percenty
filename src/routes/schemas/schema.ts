@@ -25,7 +25,8 @@ export type CategoryType = z.infer<typeof baseCategorySchema> & {
   categories: CategoryType[];
 };
 
-export const categorySchema: z.ZodType<CategoryType> = baseCategorySchema.extend({
+export const categorySchema: z.ZodType<CategoryType> &
+  z.ZodObject<z.ZodRawShape, 'strip', z.ZodTypeAny> = baseCategorySchema.extend({
   categories: z.array(z.lazy(() => categorySchema))
 });
 
