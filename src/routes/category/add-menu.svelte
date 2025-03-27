@@ -1,7 +1,7 @@
 <script lang="ts">
   import { Button } from '$lib/components/ui/button';
   import * as Popover from '$lib/components/ui/popover';
-  import { Plus } from 'lucide-svelte';
+  import { EllipsisVertical, Plus, Trash } from 'lucide-svelte';
 
   type Props = {
     onCategoryAdd: () => void;
@@ -25,16 +25,19 @@
 
 <Popover.Root open={isAddMenuOpen} {onOpenChange}>
   <Popover.Trigger>
-    <Button variant="outline" size="icon"><Plus /></Button>
+    <Button variant="outline" size="icon"><EllipsisVertical /></Button>
   </Popover.Trigger>
   <Popover.Content class="flex flex-col">
-    <Button variant="outline" class="flex justify-start" on:click={() => onMenuClick(onCategoryAdd)}
-      ><Plus /> sub category
+    <Button
+      variant="outline"
+      class="justify-start gap-2"
+      on:click={() => onMenuClick(onCategoryAdd)}
+      ><Plus /> Add category
     </Button>
     <Button
       variant="outline"
-      class="flex justify-start"
-      on:click={() => onMenuClick(onPercentageAdd)}><Plus /> percentage</Button
+      class="justify-start gap-2"
+      on:click={() => onMenuClick(onPercentageAdd)}><Trash /> Remove Category</Button
     >
   </Popover.Content>
 </Popover.Root>

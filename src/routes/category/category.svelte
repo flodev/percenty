@@ -18,15 +18,14 @@
 
 <Card.Root>
   <Card.Header class="flex flex-row items-center justify-between">
-    <Card.Title class="flex items-center gap-5"
-      ><span class="text-2xl text-blue-600">{category.percent}%</span>
+    <Card.Title class="flex items-center gap-5">
       {category.name}
-      <Button on:click={() => onAmountClick?.(category.amount)}>{category.amount}</Button
-      ></Card.Title
-    >
+    </Card.Title>
     <AddMenu onCategoryAdd={() => onCategoryAdd(category)} onPercentageAdd={console.log} />
   </Card.Header>
   <Card.Content>
+    <span class="text-2xl text-blue-600">{category.percent}%</span>
+    <Button on:click={() => onAmountClick?.(category.amount)}>{category.amount}</Button>
     {#each category.categories as childCategory}
       <CategoryComponentRecursive category={childCategory} {onCategoryAdd} />
     {/each}
