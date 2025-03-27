@@ -7,7 +7,7 @@ export class Category {
   percentages = $state<PercentageSchemaType[]>([]);
   parent = $state<Category | undefined>();
 
-  private _amount?: number;
+  _amount? = $state<number>();
 
   constructor(
     name: string,
@@ -36,6 +36,13 @@ export class Category {
       throw new Error('amount is not defined in root category');
     }
     return this._amount;
+  }
+
+  set amount(amount: number) {
+    if (this.parent) {
+      throw new Error('trying to set amount on a category which is not the root');
+    }
+    this._amount = amount;
   }
 
   get availablePercent(): number {

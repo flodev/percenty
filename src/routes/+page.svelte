@@ -11,7 +11,7 @@
   let isDrawerOpen = $state(false);
   let parentCategory = $state<CategoryClass | undefined>();
 
-  let data = $state<CategoryClass>(new CategoryClass('root', 100, [], []));
+  let data = $state<CategoryClass>(new CategoryClass('root', 100, [], [], undefined, 1));
 
   let emptyForm: SuperValidated<Infer<CategorySchema>> = {
     data: {
@@ -36,8 +36,9 @@
 
   const onAmountFormSubmit = (amountData: number) => {
     amountForm.data.amount = amountData;
+    data.amount = amountData;
   };
-  function onCategoryAdd(parent?: CategoryClass) {
+  function onCategoryAdd(parent: CategoryClass) {
     parentCategory = parent;
     isDrawerOpen = true;
   }
@@ -56,7 +57,7 @@
 </script>
 
 <div class="flex justify-end">
-  <AddMenu {onCategoryAdd} onPercentageAdd={console.log} />
+  <AddMenu onCategoryAdd={() => onCategoryAdd(data)} onPercentageAdd={console.log} />
 </div>
 <Amount amount={amountForm.data.amount} onSubmit={onAmountFormSubmit} />
 {#each data.categories as category}
