@@ -3,11 +3,14 @@
   import CategoryComponentRecursive from './category.svelte';
   import type { Category } from '../schemas/category.svelte';
   import AddMenu from './add-menu.svelte';
+  import { Button } from '$lib/components/ui/button';
 
   let {
     category,
-    onCategoryAdd
+    onCategoryAdd,
+    onAmountClick
   }: {
+    onAmountClick?: (amount: number) => void;
     category: Category;
     onCategoryAdd: (parent: Category) => void;
   } = $props();
@@ -15,10 +18,11 @@
 
 <Card.Root>
   <Card.Header class="flex flex-row items-center justify-between">
-    <Card.Title
+    <Card.Title class="flex items-center gap-5"
       ><span class="text-2xl text-blue-600">{category.percent}%</span>
       {category.name}
-      {category.amount}</Card.Title
+      <Button on:click={() => onAmountClick?.(category.amount)}>{category.amount}</Button
+      ></Card.Title
     >
     <AddMenu onCategoryAdd={() => onCategoryAdd(category)} onPercentageAdd={console.log} />
   </Card.Header>

@@ -69,7 +69,7 @@
 {/if}
 
 {#if !isWritable}
-  <div class="flex-row items-center justify-start">
+  <div class="flex flex-row items-center justify-start gap-3">
     Amount: {amount}
     <Button variant="outline" size="icon" on:click={() => (isWritable = true)}
       ><Edit class="align-middle" /></Button

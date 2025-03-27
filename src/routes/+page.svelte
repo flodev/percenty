@@ -8,6 +8,9 @@
   import AddMenu from './category/add-menu.svelte';
   import Amount from './amount.svelte';
   import { AmountSchema, type AmountFormData } from './amount-schema';
+  import { toast } from 'svelte-sonner';
+  import { copyText } from 'svelte-copy';
+
   let isDrawerOpen = $state(false);
   let parentCategory = $state<CategoryClass | undefined>();
 
@@ -54,14 +57,25 @@
     parentCategory = undefined;
     isDrawerOpen = false;
   }
+
+  async function onAmountClick(amount: number) {
+    try {
+      await copyText(amount.toString());
+      toast.success('Copied to clipboard', { position: 'top-center', duration: 1000 });
+    } catch (e) {
+      toast.error('Copy did not work :/');
+    }
+  }
 </script>
 
-<div class="flex justify-end">
+<div class="my-5 flex justify-end">
   <AddMenu onCategoryAdd={() => onCategoryAdd(data)} onPercentageAdd={console.log} />
 </div>
-<Amount amount={amountForm.data.amount} onSubmit={onAmountFormSubmit} />
+<div class="my-5">
+  <Amount amount={amountForm.data.amount} onSubmit={onAmountFormSubmit} />
+</div>
 {#each data.categories as category}
-  <Category {category} {onCategoryAdd} />
+  <Category {category} {onCategoryAdd} {onAmountClick} />
 {/each}
 
 <Drawer open={isDrawerOpen} title="New Category" onClose={() => (isDrawerOpen = false)}>
