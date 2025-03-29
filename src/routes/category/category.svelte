@@ -32,11 +32,14 @@
     <span class="text-2xl text-blue-600">{category.percent}%</span>
     <Button on:click={() => onAmountClick?.(category.amount)}>{category.amount}</Button>
     {#each category.categories as childCategory}
-      <CategoryComponentRecursive
-        category={childCategory}
-        {onCategoryAdd}
-        onCategoryRemove={() => onCategoryRemove(category)}
-      />
+      <div class="mt-5">
+        <CategoryComponentRecursive
+          category={childCategory}
+          {onCategoryAdd}
+          onCategoryRemove={() => onCategoryRemove(childCategory)}
+          {onAmountClick}
+        />
+      </div>
     {/each}
   </Card.Content>
 </Card.Root>

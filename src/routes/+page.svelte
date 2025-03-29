@@ -58,6 +58,7 @@
         );
       }
     }
+    categoryForDelete = undefined;
   }
 
   function onCategoryRemove(category: CategoryClass) {
@@ -85,6 +86,11 @@
       toast.error('Copy did not work :/');
     }
   }
+
+  function onCancelConfirmDelete() {
+    isConfirmDeleteCategoryOpen = false;
+    categoryForDelete = undefined;
+  }
 </script>
 
 <div class="my-5 flex justify-end">
@@ -109,6 +115,6 @@
   <ConfirmCategoryDelete
     isOpen={isConfirmDeleteCategoryOpen}
     onConfirm={onConfirmDeleteCategory}
-    onCancel={() => (isConfirmDeleteCategoryOpen = false)}
+    onCancel={onCancelConfirmDelete}
   />
 {/if}
