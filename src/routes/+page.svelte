@@ -10,9 +10,11 @@
   import { AmountSchema, type AmountFormData } from './amount-schema';
   import { toast } from 'svelte-sonner';
   import { copyText } from 'svelte-copy';
+  import ConfirmCategoryDelete from './confirm-category-delete.svelte';
 
   let isDrawerOpen = $state(false);
   let parentCategory = $state<CategoryClass | undefined>();
+  let isConfirmDeleteCategoryOpen = $state(false);
 
   let data = $state<CategoryClass>(new CategoryClass('root', 100, [], [], undefined, 1));
 
@@ -46,6 +48,14 @@
     isDrawerOpen = true;
   }
 
+  function onCategoryRemove(category: CategoryClass) {
+    if (category.parent) {
+      category.parent.categories = category.parent?.categories.filter(
+        (parentCategory) => category !== parentCategory
+      );
+    }
+  }
+
   function onCategorySubmit(formData: CategoryType) {
     const newCategory = new CategoryClass(formData.name, formData.percent, [], [], parentCategory);
 
@@ -69,13 +79,13 @@
 </script>
 
 <div class="my-5 flex justify-end">
-  <AddMenu onCategoryAdd={() => onCategoryAdd(data)} onPercentageAdd={console.log} />
+  <AddMenu onCategoryAdd={() => onCategoryAdd(data)} />
 </div>
 <div class="my-5">
   <Amount amount={amountForm.data.amount} onSubmit={onAmountFormSubmit} />
 </div>
 {#each data.categories as category}
-  <Category {category} {onCategoryAdd} {onAmountClick} />
+  <Category {category} {onCategoryAdd} {onAmountClick} {onCategoryRemove} />
 {/each}
 
 <Drawer open={isDrawerOpen} title="New Category" onClose={() => (isDrawerOpen = false)}>
@@ -85,3 +95,7 @@
     maxPercent={parentCategory?.availablePercent ?? data.availablePercent}
   />
 </Drawer>
+
+{#if isConfirmDeleteCategoryOpen}
+  <ConfirmCategoryDelete isOpen={isConfirmDeleteCategoryOpen} />
+{/if}

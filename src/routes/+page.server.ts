@@ -1,3 +1,6 @@
+export const csr = true;
+export const prerender = false;
+export const ssr = false;
 import { superValidate } from 'sveltekit-superforms';
 import { categorySchema } from './schemas/schema';
 import { fail } from '@sveltejs/kit';

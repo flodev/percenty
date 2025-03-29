@@ -5,10 +5,10 @@
 
   type Props = {
     onCategoryAdd: () => void;
-    onPercentageAdd: () => void;
+    onCategoryRemove?: () => void;
   };
 
-  const { onCategoryAdd, onPercentageAdd }: Props = $props();
+  const { onCategoryAdd, onCategoryRemove }: Props = $props();
 
   let isAddMenuOpen = $state(false);
 
@@ -34,10 +34,12 @@
       on:click={() => onMenuClick(onCategoryAdd)}
       ><Plus /> Add category
     </Button>
-    <Button
-      variant="outline"
-      class="justify-start gap-2"
-      on:click={() => onMenuClick(onPercentageAdd)}><Trash /> Remove Category</Button
-    >
+    {#if onCategoryRemove}
+      <Button
+        variant="outline"
+        class="justify-start gap-2"
+        on:click={() => onMenuClick(onCategoryRemove)}><Trash /> Remove Category</Button
+      >
+    {/if}
   </Popover.Content>
 </Popover.Root>

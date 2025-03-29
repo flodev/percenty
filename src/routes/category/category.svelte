@@ -8,11 +8,13 @@
   let {
     category,
     onCategoryAdd,
-    onAmountClick
+    onAmountClick,
+    onCategoryRemove
   }: {
     onAmountClick?: (amount: number) => void;
     category: Category;
     onCategoryAdd: (parent: Category) => void;
+    onCategoryRemove: (category: Category) => void;
   } = $props();
 </script>
 
@@ -21,13 +23,20 @@
     <Card.Title class="flex items-center gap-5">
       {category.name}
     </Card.Title>
-    <AddMenu onCategoryAdd={() => onCategoryAdd(category)} onPercentageAdd={console.log} />
+    <AddMenu
+      onCategoryAdd={() => onCategoryAdd(category)}
+      onCategoryRemove={() => onCategoryRemove(category)}
+    />
   </Card.Header>
   <Card.Content>
     <span class="text-2xl text-blue-600">{category.percent}%</span>
     <Button on:click={() => onAmountClick?.(category.amount)}>{category.amount}</Button>
     {#each category.categories as childCategory}
-      <CategoryComponentRecursive category={childCategory} {onCategoryAdd} />
+      <CategoryComponentRecursive
+        category={childCategory}
+        {onCategoryAdd}
+        onCategoryRemove={() => onCategoryRemove(category)}
+      />
     {/each}
   </Card.Content>
 </Card.Root>
