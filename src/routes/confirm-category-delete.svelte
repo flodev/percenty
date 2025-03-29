@@ -1,25 +1,21 @@
 <script lang="ts">
   import * as AlertDialog from '$lib/components/ui/alert-dialog/index.js';
 
-  const { isOpen } = $props();
+  const { isOpen, onConfirm, onCancel } = $props();
 </script>
 
-<AlertDialog.Root open={isOpen}>
-  <!-- <AlertDialog.Trigger asChild let:builder> -->
-  <!-- {@render triggerButton(builder)} -->
-  <!-- <Button builders={[builder]} variant="outline">Show Dialog</Button> -->
-  <!-- </AlertDialog.Trigger> -->
+<AlertDialog.Root open={isOpen} onOpenChange={(state) => (state === false ? onCancel() : '')}>
   <AlertDialog.Content>
     <AlertDialog.Header>
       <AlertDialog.Title>Are you absolutely sure?</AlertDialog.Title>
       <AlertDialog.Description>
-        This action cannot be undone. This will permanently delete your account and remove your data
-        from our servers.
+        This action cannot be undone. This will permanently delete the category and all sub
+        cateogries.
       </AlertDialog.Description>
     </AlertDialog.Header>
     <AlertDialog.Footer>
       <AlertDialog.Cancel>Cancel</AlertDialog.Cancel>
-      <AlertDialog.Action>Continue</AlertDialog.Action>
+      <AlertDialog.Action on:click={onConfirm}>Continue</AlertDialog.Action>
     </AlertDialog.Footer>
   </AlertDialog.Content>
 </AlertDialog.Root>

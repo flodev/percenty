@@ -15,6 +15,7 @@
   let isDrawerOpen = $state(false);
   let parentCategory = $state<CategoryClass | undefined>();
   let isConfirmDeleteCategoryOpen = $state(false);
+  let categoryForDelete = $state<CategoryClass | undefined>();
 
   let data = $state<CategoryClass>(new CategoryClass('root', 100, [], [], undefined, 1));
 
@@ -22,7 +23,7 @@
     data: {
       categories: [],
       name: '',
-      percent: 50,
+      amount: undefined,
       percentages: []
     },
     valid: true,
@@ -48,12 +49,20 @@
     isDrawerOpen = true;
   }
 
-  function onCategoryRemove(category: CategoryClass) {
-    if (category.parent) {
-      category.parent.categories = category.parent?.categories.filter(
-        (parentCategory) => category !== parentCategory
-      );
+  function onConfirmDeleteCategory() {
+    isConfirmDeleteCategoryOpen = false;
+    if (categoryForDelete) {
+      if (categoryForDelete.parent) {
+        categoryForDelete.parent.categories = categoryForDelete.parent?.categories.filter(
+          (parentCategory) => categoryForDelete !== parentCategory
+        );
+      }
     }
+  }
+
+  function onCategoryRemove(category: CategoryClass) {
+    isConfirmDeleteCategoryOpen = true;
+    categoryForDelete = category;
   }
 
   function onCategorySubmit(formData: CategoryType) {
@@ -97,5 +106,9 @@
 </Drawer>
 
 {#if isConfirmDeleteCategoryOpen}
-  <ConfirmCategoryDelete isOpen={isConfirmDeleteCategoryOpen} />
+  <ConfirmCategoryDelete
+    isOpen={isConfirmDeleteCategoryOpen}
+    onConfirm={onConfirmDeleteCategory}
+    onCancel={() => (isConfirmDeleteCategoryOpen = false)}
+  />
 {/if}
