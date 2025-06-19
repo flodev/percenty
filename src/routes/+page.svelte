@@ -7,10 +7,15 @@
   import Drawer from './drawer/drawer.svelte';
   import AddMenu from './category/add-menu.svelte';
   import Amount from './amount.svelte';
-  import { AmountSchema, type AmountFormData } from './amount-schema';
+  import { type AmountFormData } from './amount-schema';
   import { toast } from 'svelte-sonner';
   import { copyText } from 'svelte-copy';
   import ConfirmCategoryDelete from './confirm-category-delete.svelte';
+  import { createCategoryTree } from './schemas/create-category-tree';
+  import { lastValueFrom } from 'rxjs';
+  import { onMount } from 'svelte';
+
+  const PERCENTY_LOCAL_STORAGE_DATA_KEY = 'percenty_data';
 
   let isDrawerOpen = $state(false);
   let parentCategory = $state<CategoryClass | undefined>();
@@ -43,6 +48,7 @@
   const onAmountFormSubmit = (amountData: number) => {
     amountForm.data.amount = amountData;
     data.amount = amountData;
+    persistLocalStorage();
   };
   function onCategoryAdd(parent: CategoryClass) {
     parentCategory = parent;
@@ -59,6 +65,7 @@
       }
     }
     categoryForDelete = undefined;
+    persistLocalStorage();
   }
 
   function onCategoryRemove(category: CategoryClass) {
@@ -76,6 +83,7 @@
     }
     parentCategory = undefined;
     isDrawerOpen = false;
+    persistLocalStorage();
   }
 
   async function onAmountClick(amount: number) {
@@ -91,6 +99,23 @@
     isConfirmDeleteCategoryOpen = false;
     categoryForDelete = undefined;
   }
+
+  function persistLocalStorage() {
+    console.log('persistLocalStorage');
+    localStorage.setItem(PERCENTY_LOCAL_STORAGE_DATA_KEY, JSON.stringify(data.toJSON()));
+  }
+
+  onMount(() => {
+    const percentyData = localStorage.getItem(PERCENTY_LOCAL_STORAGE_DATA_KEY);
+    if (percentyData && typeof percentyData === 'string') {
+      lastValueFrom(createCategoryTree(JSON.parse(percentyData)))
+        .then((treeData) => {
+          data = treeData;
+          amountForm.data.amount = treeData.amount;
+        })
+        .catch(console.error);
+    }
+  });
 </script>
 
 <div class="my-5 flex justify-end">
